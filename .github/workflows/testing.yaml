@@ -68,7 +68,7 @@ jobs:
   create_ecr_registry:
     name: Deploy ECR Registry in AWS
     runs-on: ubuntu-latest
-    needs: [unit_testing, security_scan, terraform_scripts_analysis]
+    needs: [Teste, security_scan, terraform_scripts_analysis]
     steps:
 
     - name: Check out code
