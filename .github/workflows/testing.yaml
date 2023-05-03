@@ -188,3 +188,4 @@ jobs:
         docker push $ECR_REPOSITORY_URL:$IMAGE_TAG
     outputs:
       ecr_image_tag: ${{ steps.build_image.outputs.ecr_image_tag }}
+      
