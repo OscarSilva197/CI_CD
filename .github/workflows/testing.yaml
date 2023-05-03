@@ -159,33 +159,13 @@ jobs:
       id: build_image
       env:
         ECR_REPOSITORY_URL: ${{needs.create_ecr_registry.outputs.aws_ecr_repository_url}}
-        IMAGE_TAG: tmf632-party-mgmt-api
+        IMAGE_TAG: ${{github.sha}}
       run: |
         echo "$ECR_REPOSITORY_URL"
         echo "$ECR_REPOSITORY_URL:$IMAGE_TAG"
-        docker build  -t $ECR_REPOSITORY_URL:$IMAGE_TAG -f docker/Dockerfile ./
+        docker build -t $ECR_REPOSITORY_URL:$IMAGE_TAG -f docker/Dockerfile ./
         echo "Docker Image: ${ECR_REPOSITORY_URL}:${IMAGE_TAG}"
-        echo "::set-output name=ecr_repository_url::$ECR_REPOSITORY_URL"
-        echo "::set-output name=ecr_image_tag::$IMAGE_TAG"
-        echo "::set-output name=ecr_image::$ECR_REPOSITORY_URL:$IMAGE_TAG"
-
-    #- name: Run Trivy vulnerability scanner
-    #  uses: aquasecurity/trivy-action@master
-    #  with:
-    #    image-ref: '${{ steps.build_image.outputs.ecr_image }}'
-    #    format: 'sarif'
-    #    output: 'trivy-results.sarif'
-        
-    - name: Push Ducker Image to AWS ECR
-      id: push_image
-      env:
-        ECR_REPOSITORY_URL: ${{needs.create_ecr_registry.outputs.aws_ecr_repository_url}}
-        IMAGE_TAG: tmf632-party-mgmt-api
-      run: |
-        echo "$ECR_REPOSITORY_URL"
-        echo "$ECR_REPOSITORY_URL:$IMAGE_TAG"
-        docker build  -t $ECR_REPOSITORY_URL:$IMAGE_TAG -f docker/Dockerfile ./
         docker push $ECR_REPOSITORY_URL:$IMAGE_TAG
     outputs:
-      ecr_image_tag: ${{ steps.build_image.outputs.ecr_image_tag }}
-      
+        ecr_image_tag: ${{ steps.build-and-push.outputs.IMAGE_TAG }}
+        ecr_image_uri: ${{ steps.build-and-push.outputs.IMAGE_URI }}
