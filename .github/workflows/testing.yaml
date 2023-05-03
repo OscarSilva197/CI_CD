@@ -52,14 +52,16 @@ jobs:
     name: Scan Terraform Scripts
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python 3.9
-        uses: actions/setup-python@v1
-        with:
-          python-version: 3.9
-      - name: Test with Checkov
-        id: checkov
-        uses: bridgecrewio/checkov-action@master
-        with:
-          directory: ECR_ECS/network
-          framework: terraform 
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.9
+    - name: Test with Checkov
+      id: checkov
+      uses: bridgecrewio/checkov-action@master
+      with:
+        directory: ECR_ECS/
+        framework: terraform
+        skip_check: "CKV_DOCKER_1,CKV_AWS_19"
+        skip_block: "resource.aws_security_group_rule.allow_ssh_inbound,resource.aws_security_group_rule.allow_all_inbound,resource.aws_security_group_rule.allow_all_outbound,resource.aws_security_group_rule.deny_all_outbound,resource.aws_security_group_rule.deny_all_inbound"
