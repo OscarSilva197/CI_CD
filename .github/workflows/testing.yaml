@@ -136,14 +136,12 @@ jobs:
 
   build:
     needs: create_ecr_registry
-    
     name: Build Docker Image, Scan It (Security), and Push It to ECR
     runs-on: ubuntu-latest
     steps:
-
     - name: Check out code
       uses: actions/checkout@v2
-    
+
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -155,8 +153,8 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Build, and tag Docker Image
-      id: build_image
+    - name: Build, tag and push Docker Image to ECR
+      id: build-and-push
       env:
         ECR_REPOSITORY_URL: ${{needs.create_ecr_registry.outputs.aws_ecr_repository_url}}
         IMAGE_TAG: ${{github.sha}}
