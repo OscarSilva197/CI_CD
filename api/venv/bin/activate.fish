@@ -30,7 +30,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/oscar/Terrafor/ecs_abl/rio-academy-base-api/api/venv"
+set -gx VIRTUAL_ENV "/home/oscar/Terrafor/ecs_abl/ECR_ECS/CI_CD/api/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
