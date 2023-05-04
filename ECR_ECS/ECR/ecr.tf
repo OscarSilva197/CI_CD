@@ -9,9 +9,9 @@ resource "aws_ecr_repository" "my_repository" {
   name = "my-repository"
 }
 
-################################
+
 #           Outputs            #
-################################
+
 output "aws_ecr_registry_id" {
   value = aws_ecr_repository.my_repository.registry_id
 }
