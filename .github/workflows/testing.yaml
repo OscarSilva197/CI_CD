@@ -9,7 +9,7 @@ on:
 jobs:
 
   test:
-    name: Teste
+    name: Unitary Tests
     runs-on: ubuntu-latest
       
     steps:
