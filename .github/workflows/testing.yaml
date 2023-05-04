@@ -296,7 +296,7 @@ jobs:
 
   delete_testing_environment_deployment:
     if: always()
-    needs: [build, create_ecr_registry,  deploy_testing_environment]
+    needs: [build, create_ecr_registry,  e2e_testing]
     name: Destroy Testing Environment
     runs-on: ubuntu-latest
     steps:
