@@ -135,7 +135,8 @@ jobs:
 
   ##########################################################################
 
-    
+  
+
 
 
   build:
@@ -172,13 +173,6 @@ jobs:
         echo "::set-output name=ecr_repository_url::$ECR_REPOSITORY_URL"
         echo "::set-output name=ecr_image_tag::$IMAGE_TAG"
         echo "::set-output name=ecr_image::$ECR_REPOSITORY_URL:$IMAGE_TAG"
-
-    #- name: Run Trivy vulnerability scanner
-    #  uses: aquasecurity/trivy-action@master
-    #  with:
-    #    image-ref: '${{ steps.build_image.outputs.ecr_image }}'
-    #    format: 'sarif'
-    #    output: 'trivy-results.sarif'
         
     - name: Push Ducker Image to AWS ECR
       id: push_image
@@ -192,4 +186,3 @@ jobs:
         docker push $ECR_REPOSITORY_URL:$IMAGE_TAG
     outputs:
       ecr_image_tag: ${{ steps.build_image.outputs.ecr_image_tag }}
-
