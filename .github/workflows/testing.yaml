@@ -133,6 +133,7 @@ jobs:
       aws_ecr_repository_url: ${{ steps.terraform_apply.outputs.aws_ecr_repository_url }}
 
   ##########################################################################
+  
   build:
     needs: create_ecr_registry
     
