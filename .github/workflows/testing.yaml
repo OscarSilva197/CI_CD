@@ -287,3 +287,4 @@ jobs:
       run: |
         echo "Docker Image Name: $TF_VAR_docker_image_name"
         terraform destroy -auto-approve
+        
