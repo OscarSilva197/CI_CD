@@ -278,10 +278,10 @@ jobs:
 
       - name: Wait for API to be Running
         env:
-          WAIT_FOR_ENDPOINT_URL: ${{ needs.deploy_testing_environment.outputs.api_url }}/healthcheck/
+          WAIT_FOR_ENDPOINT_URL: "${{ needs.deploy_testing_environment.outputs.api_url }}/healthcheck/"
         working-directory: robot_tests
         run: |
-          echo "HEALTHCHECK_ENDPOINT: $URL"
+          echo "HEALTHCHECK_ENDPOINT: $WAIT_FOR_ENDPOINT_URL"
           python waitForAPI.py
 
       - name: Run E2E Tests
@@ -296,7 +296,7 @@ jobs:
 
   delete_testing_environment_deployment:
     if: always()
-    needs: [build, create_ecr_registry,  e2e_testing]
+    needs: [build, create_ecr_registry, e2e_testing]
     name: Destroy Testing Environment
     runs-on: ubuntu-latest
     steps:
