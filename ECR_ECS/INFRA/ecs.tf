@@ -127,7 +127,7 @@ resource "aws_ecs_task_definition" "dummy_api_task" {
   [
     {
       "name"      : "base_api",
-      "image"     : "${var.docker_image_name}",
+      "image"     : "tmf632-party-mgmt-api",
       "cpu"       : 512,
       "memory"    : 1024,
       "essential" : true,
