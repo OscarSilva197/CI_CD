@@ -127,7 +127,7 @@ resource "aws_ecs_task_definition" "dummy_api_task" {
   [
     {
       "name"      : "base_api",
-      "image"     : "tmf632-party-mgmt-api",
+      "image"     : "770240298425.dkr.ecr.us-east-1.amazonaws.com/my-repository:tmf632-party-mgmt-api",
       "cpu"       : 512,
       "memory"    : 1024,
       "essential" : true,
