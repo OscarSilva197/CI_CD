@@ -37,6 +37,9 @@ variable "environment" {
   description = "Deployment Environment"
 }
 
+variable "docker_image_name" {}
+
+
 /*
 variable "access_key" {
   type      = string
