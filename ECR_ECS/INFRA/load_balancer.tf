@@ -1,3 +1,5 @@
+
+/*
 resource "aws_alb" "application_load_balancer" {
   name               =  "application-load-balancer" # Naming our load balancer
   load_balancer_type = "application"
@@ -32,3 +34,5 @@ resource "aws_security_group" "security_load" {
     Terraform   = "true"
   }
 }
+
+*/
