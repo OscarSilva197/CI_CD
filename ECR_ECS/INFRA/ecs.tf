@@ -1,50 +1,23 @@
 
-# Cria uma role do IAM para o ECS
 resource "aws_iam_role" "ecs_execution_role" {
   name = "ecs-execution-role"
-
-  assume_role_policy = jsonencode(
-    {
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Principal = {
-          Service = "ecs-tasks.amazonaws.com"
-        }
-        Action = "sts:AssumeRole"
-      }
-    ]
-  }
-  )
+ 
+  assume_role_policy = <<EOF
+{
+ "Version": "2012-10-17",
+ "Statement": [
+   {
+     "Action": "sts:AssumeRole",
+     "Principal": {
+       "Service": "ecs-tasks.amazonaws.com"
+     },
+     "Effect": "Allow",
+     "Sid": ""
+   }
+ ]
 }
-#########################################
-
-
-# Cria uma política de acesso que permite que a role do ECS execute imagens do ECR
-resource "aws_iam_policy" "ecs_execution_policy" {
-  name = "ecs-execution-policy"
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = [
-          "ecr:GetAuthorizationToken",
-          "ecr:BatchCheckLayerAvailability",
-          "ecr:GetDownloadUrlForLayer",
-          "ecr:GetRepositoryPolicy",
-          "ecr:DescribeRepositories",
-          "ecr:ListImages",
-          "ecr:DescribeImages",
-          "ecr:BatchGetImage"
-        ]
-        Resource = "*"
-      }
-    ]
-  })
+EOF
 }
-##############################################333
 
 resource "aws_iam_role" "ecs_task_role" {
   name = "ecs-task-role"
@@ -65,16 +38,14 @@ resource "aws_iam_role" "ecs_task_role" {
 }
 EOF
 }
-##############################################################3
-
-# Anexa a política de acesso à role do ECS
-resource "aws_iam_role_policy_attachment" "ecs_execution_policy_attachment" {
-  policy_arn = aws_iam_policy.ecs_execution_policy.arn
+ 
+resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-policy-attachment" {
   role       = aws_iam_role.ecs_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 resource "aws_iam_role_policy_attachment" "task_s3" {
-  role       = "${aws_iam_role.ecs_execution_role.name}"
-  policy_arn = aws_iam_policy.ecs_execution_policy.arn
+  role       = "${aws_iam_role.ecs_task_role.name}"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
 
 resource "aws_cloudwatch_log_group" "base_api_client" {
@@ -116,12 +87,16 @@ resource "aws_ecs_service" "dummy_api_service" {
   lifecycle {
     ignore_changes = [task_definition]
   }
+
   load_balancer {
     target_group_arn = aws_lb_target_group.api_service_target_group.arn
     container_name   = "base_api"
     container_port   = 80
   }
+  
 }
+
+
 # Now, let's define a tast to run in the just created ECS Cluster
 resource "aws_ecs_task_definition" "dummy_api_task" {
   family                   = "service"
