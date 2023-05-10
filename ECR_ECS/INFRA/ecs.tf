@@ -116,7 +116,6 @@ resource "aws_ecs_service" "dummy_api_service" {
   lifecycle {
     ignore_changes = [task_definition]
   }
-
   load_balancer {
     target_group_arn = aws_lb_target_group.api_service_target_group.arn
     container_name   = "base_api"
