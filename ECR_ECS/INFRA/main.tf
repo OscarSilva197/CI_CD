@@ -32,7 +32,7 @@ terraform {
     key    = "terraform.tfstate"
     region = "us-east-1"
   }
-  
+
 provider "aws" {
   access_key = "AKIA3GVPGHW4VN46WPWN"
   secret_key = "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"
