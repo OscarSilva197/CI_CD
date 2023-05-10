@@ -1,11 +1,4 @@
 
-/*
-provider "aws" {
-  region = "us-east-1"
-}
-*/
-# Configure the Docker & AWS Providers
-
 terraform {
   required_providers {
     docker = {
@@ -28,9 +21,3 @@ provider "aws" {
 output "alb_address" {
   value = "http://${module.INFRA.alb_address}"
 }
-
-/*
-terraform {
-  backend "s3" {}
-}
-*/
