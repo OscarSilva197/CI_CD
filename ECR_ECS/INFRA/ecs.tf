@@ -122,7 +122,6 @@ resource "aws_ecs_service" "dummy_api_service" {
     container_name   = "base_api"
     container_port   = 80
   }
-  
 }
 
 
