@@ -178,7 +178,7 @@ resource "aws_lb_target_group" "api_service_target_group" {
   port        = 80
   protocol    = "HTTP"
   target_type = "ip"
-  vpc_id      = var.vpc_id
+  vpc_id     = aws_vpc.my_vpc.id
   health_check {
     matcher = "200,301,302"
     path = "/organization"
