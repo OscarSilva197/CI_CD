@@ -124,7 +124,6 @@ resource "aws_ecs_service" "dummy_api_service" {
   }
 }
 
-
 # Now, let's define a tast to run in the just created ECS Cluster
 resource "aws_ecs_task_definition" "dummy_api_task" {
   family                   = "service"
