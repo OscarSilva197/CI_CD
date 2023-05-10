@@ -16,7 +16,6 @@ terraform {
 terraform {
   required_version = ">= 1.0.7"
   required_providers {
-    
     docker = {
       source  = "kreuzwerker/docker"
       version = "~> 2.20.0"
@@ -33,12 +32,14 @@ terraform {
   }
 }
 
+provider "aws" {
+  access_key = "AKIA3GVPGHW4VN46WPWN"
+  secret_key = "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"
+  region     = "us-east-1"
+}
+
 
 
 provider "docker" {}
 
-/*
-provider "aws" {
-  region     = "us-east-1"
-}
-*/
+
