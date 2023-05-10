@@ -13,12 +13,8 @@ output "aws_ecs_cluster_capacity_providers" {
 
 */
 
-/*
+
 output "alb_address" {
   value = aws_alb.application_load_balancer.dns_name
 }
-*/
 
-output "alb_address" {
-  value = "http://${module.INFRA.aws_alb.application_load_balancer.dns_name}"
-}
