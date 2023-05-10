@@ -50,10 +50,6 @@ resource "aws_iam_role_policy_attachment" "task_s3" {
 
 resource "aws_cloudwatch_log_group" "base_api_client" {
   name = "base-api-client"
-
-  tags = {
-    Environment = var.environment
-  }
 }
 
 resource "aws_cloudwatch_log_stream" "base_api_client" {
@@ -65,14 +61,10 @@ resource "aws_cloudwatch_log_stream" "base_api_client" {
 
 # Create and ECS Cluster
 resource "aws_ecs_cluster" "ecs_cluster" {
-  name = "${var.environment}-ecs-cluster"
+  name = "ecs-cluster"
   setting {
     name  = "containerInsights"
     value = "enabled"
-  }
-  tags = {
-    Terraform   = "true"
-    Environment = var.environment
   }
 }
 
@@ -100,11 +92,6 @@ resource "aws_ecs_service" "dummy_api_service" {
     target_group_arn = aws_lb_target_group.api_service_target_group.arn
     container_name   = "base_api"
     container_port   = 80
-  }
-
-  tags = {
-    Terraform   = "true"
-    Environment = "${var.environment}"
   }
   
 }
@@ -163,11 +150,6 @@ resource "aws_alb" "application_load_balancer" {
   subnets            = [aws_subnet.public_subnet_1.id, aws_subnet.public_subnet_2.id]
   # Referencing the security group
   security_groups = [aws_security_group.dummy_api_sg.id]
-
-  tags = {
-    Terraform   = "true"
-    Environment = "${var.environment}"
-  }
 }
 
 
@@ -183,11 +165,6 @@ resource "aws_lb_target_group" "api_service_target_group" {
     matcher = "200,301,302"
     path = "/organization"
   }
-
-  tags = {
-    Terraform   = "true"
-    Environment = "${var.environment}"
-  }
 }
 
 
@@ -201,10 +178,6 @@ resource "aws_lb_listener" "dummy_api_listener" {
     target_group_arn = aws_lb_target_group.api_service_target_group.arn
   }
 
-  tags = {
-    Terraform   = "true"
-    Environment = "${var.environment}"
-  }
 }
 
 
@@ -227,10 +200,5 @@ resource "aws_security_group" "dummy_api_sg" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Terraform   = "true"
-    Environment = "${var.environment}"
   }
 }
