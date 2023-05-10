@@ -38,16 +38,3 @@ variable "environment" {
 }
 
 variable "docker_image_name" {}
-
-
-/*
-variable "access_key" {
-  type      = string
-  sensitive = true
-}
-
-variable "secret_access_key" {
-  type      = string
-  sensitive = true
-}
-*/
