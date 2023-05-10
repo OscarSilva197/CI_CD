@@ -25,6 +25,8 @@ terraform {
       version = ">= 1.0.0"
     }
   }
+  }
+  /*
   backend "s3" {
     bucket = "silvaoscarda"
     key    = "terraform.tfstate"
@@ -35,7 +37,7 @@ provider "aws" {
   access_key = "AKIA3GVPGHW4VN46WPWN"
   secret_key = "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"
   region     = "us-east-1"
-}
+}*/
 
 provider "docker" {}
 
