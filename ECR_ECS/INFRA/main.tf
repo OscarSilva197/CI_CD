@@ -17,7 +17,3 @@ provider "docker" {}
 provider "aws" {
   region     = "us-east-1"
 }
-
-output "alb_address" {
-  value = "http://${module.INFRA.alb_address}"
-}
