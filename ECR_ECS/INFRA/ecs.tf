@@ -114,7 +114,6 @@ resource "aws_ecs_service" "dummy_api_service" {
     subnets = [aws_subnet.private_subnet_1.id, aws_subnet.private_subnet_2.id]
   }
 
-  
   lifecycle {
     ignore_changes = [task_definition]
   }
