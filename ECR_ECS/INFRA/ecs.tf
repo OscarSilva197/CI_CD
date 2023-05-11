@@ -19,7 +19,7 @@ resource "aws_iam_role" "ecs_execution_role" {
   )
 }
 #########################################
-
+/*
 
 # Cria uma política de acesso que permite que a role do ECS execute imagens do ECR
 resource "aws_iam_policy" "ecs_execution_policy" {
@@ -44,6 +44,7 @@ resource "aws_iam_policy" "ecs_execution_policy" {
     ]
   })
 }
+*/
 ##############################################333
 
 resource "aws_iam_role" "ecs_task_role" {
