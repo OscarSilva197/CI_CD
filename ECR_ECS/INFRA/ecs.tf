@@ -195,7 +195,6 @@ resource "aws_lb_target_group" "api_service_target_group" {
   }
 }
 
-
 # Create and ALB Listener that points to the Target Group just created
 resource "aws_lb_listener" "dummy_api_listener" {
   load_balancer_arn = aws_alb.application_load_balancer.arn
