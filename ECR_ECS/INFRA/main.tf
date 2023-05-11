@@ -26,8 +26,9 @@ terraform {
     }
   }
   }
+
   /*
-  
+
   backend "s3" {
     bucket = "silvaoscarda"
     key    = "terraform.tfstate"
@@ -41,5 +42,6 @@ provider "aws" {
 }*/
 
 provider "docker" {}
+
 
 
