@@ -1,7 +1,7 @@
 
 # Cria uma role do IAM para o ECS
 resource "aws_iam_role" "ecs_execution_role" {
-  name = "ecs-execution-role"
+  name = "ecs_execution_role"
 
   assume_role_policy = jsonencode(
     {
