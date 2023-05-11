@@ -1,7 +1,7 @@
 
 # Cria uma role do IAM para o ECS
 resource "aws_iam_role" "ecs_execution_role" {
-  name = "ecs_execution_role"
+  name = "ecs-execution-role"
 
   assume_role_policy = jsonencode(
     {
@@ -22,7 +22,7 @@ resource "aws_iam_role" "ecs_execution_role" {
 
 # Cria uma política de acesso que permite que a role do ECS execute imagens do ECR
 resource "aws_iam_policy" "ecs_execution_policy" {
-  name = "ecs_execution_policy"
+  name = "ecs-execution-policy"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -74,7 +74,7 @@ resource "aws_iam_role_policy_attachment" "ecs_execution_policy_attachment" {
   policy_arn = aws_iam_policy.ecs_execution_policy.arn
   role       = aws_iam_role.ecs_execution_role.name
 }
-/*
+
 resource "aws_iam_role_policy_attachment" "task_s3" {
   role       = "${aws_iam_role.ecs_execution_role.name}"
   policy_arn = aws_iam_policy.ecs_execution_policy.arn
@@ -88,7 +88,7 @@ resource "aws_cloudwatch_log_stream" "base_api_client" {
   name           = "base-api-client"
   log_group_name = aws_cloudwatch_log_group.base_api_client.name
 }
-*/
+
 ##################################################################3
 
 # Create and ECS Cluster
