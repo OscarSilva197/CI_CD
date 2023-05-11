@@ -72,7 +72,7 @@ resource "aws_iam_role_policy_attachment" "ecs_execution_policy_attachment" {
   policy_arn = aws_iam_policy.ecs_execution_policy.arn
   role       = aws_iam_role.ecs_execution_role.name
 }
-/*
+
 resource "aws_iam_role_policy_attachment" "task_s3" {
   role       = "${aws_iam_role.ecs_execution_role.name}"
   policy_arn = aws_iam_policy.ecs_execution_policy.arn
@@ -86,7 +86,7 @@ resource "aws_cloudwatch_log_stream" "base_api_client" {
   name           = "base-api-client"
   log_group_name = aws_cloudwatch_log_group.base_api_client.name
 }
-*/
+
 ##################################################################3
 
 # Create and ECS Cluster
