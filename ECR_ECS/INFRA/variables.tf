@@ -32,8 +32,9 @@ variable "private_cidr_b" {
   type        = string
   default     = "10.0.2.0/24"
 }
+/*
 variable "environment" {
   description = "Deployment Environment"
 }
-
+*/
 variable "docker_image_name" {}
