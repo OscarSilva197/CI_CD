@@ -134,7 +134,7 @@ resource "aws_ecs_task_definition" "dummy_api_task" {
   cpu                      = 512
   memory                   = 2048
   execution_role_arn       = aws_iam_role.ecs_execution_role.arn
-  task_role_arn            = aws_iam_role.ecs_task_role.arn
+  task_role_arn            = aws_iam_role.ecs_execution_role.arn
 
   # My Dummy API
   # "trashuseraws/dummy:latest", 
