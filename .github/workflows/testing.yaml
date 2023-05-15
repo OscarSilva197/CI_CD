@@ -245,10 +245,45 @@ jobs:
       run: |
         echo "Docker Image Name: $TF_VAR_docker_image_name"
         terraform apply -auto-approve
+        sleep 60
         echo "::set-output name=api_url::$(terraform-bin output -raw alb_address)"
     outputs:
       api_url: ${{ steps.terraform_apply_testing_environment.outputs.api_url }}
 
 ########################################################################################
+  delete_testing_environment_deployment:
+    if: always()
+    needs: [build, create_ecr_registry, deploy_testing_environment]
+    name: Destroy Testing Environment
+    runs-on: ubuntu-latest
+    steps:
 
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    # Install the preferred version of Terraform CLI 
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.4.4
+        
+    - name: Terraform Init
+      env:
+        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      working-directory: ECR_ECS/INFRA
+      run: terraform init
+
+    - name: Terraform Destroy
+      env:
+        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        TF_VAR_aws_access_key_id:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        TF_VAR_aws_secret_access_key:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        # Docker Image to deploy through an ECS Task 
+        TF_VAR_docker_image_name: ${{ needs.create_ecr_registry.outputs.aws_ecr_repository_url }}:${{ needs.build.outputs.ecr_image_tag }}
+      working-directory: ECR_ECS/INFRA
+      run: |
+        echo "Docker Image Name: $TF_VAR_docker_image_name"
+        terraform destroy -auto-approve
 #######################################################################
