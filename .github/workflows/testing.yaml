@@ -292,7 +292,6 @@ jobs:
         run: |
           python -m robot .
 
-
 ########################################################################################
   delete_testing_environment_deployment:
     if: always()
