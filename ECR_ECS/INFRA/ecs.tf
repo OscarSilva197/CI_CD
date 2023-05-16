@@ -133,11 +133,7 @@ resource "aws_ecs_task_definition" "dummy_api_task" {
   cpu                      = 512
   memory                   = 2048
   execution_role_arn       = aws_iam_role.ecs_execution_role.arn
-  #task_role_arn            = aws_iam_role.ecs_execution_role.arn
 
-  # My Dummy API
-  # "trashuseraws/dummy:latest", 
-  #"516603236472.dkr.ecr.us-east-1.amazonaws.com/ritain-registry:tmf632-party-mgmt-api",
   container_definitions    = <<DEFINITION
   [
     {
