@@ -245,7 +245,6 @@ jobs:
       run: |
         echo "Docker Image Name: $TF_VAR_docker_image_name"
         terraform apply -auto-approve
-        sleep 180
         echo "::set-output name=api_url::$(terraform-bin output -raw alb_address)"
     outputs:
       api_url: ${{ steps.terraform_apply_testing_environment.outputs.api_url }}
@@ -295,7 +294,7 @@ jobs:
 ########################################################################################
   delete_testing_environment_deployment:
     if: always()
-    needs: [build, create_ecr_registry, deploy_testing_environment]
+    needs: [build, create_ecr_registry, e2e_testing]
     name: Destroy Testing Environment
     runs-on: ubuntu-latest
     steps:

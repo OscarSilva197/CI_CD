@@ -10,9 +10,8 @@ output "aws_ecs_cluster_capacity_providers" {
   value       = aws_ecs_cluster_capacity_providers.cluster.capacity_providers
   description = "Compute serverless engine for ECS"
 }
-
+*/
 output "alb_address" {
-  value = aws_alb.application_load_balancer.dns_name
+  value = "http://${aws_alb.application_load_balancer.dns_name}"
 }
 
-*/
