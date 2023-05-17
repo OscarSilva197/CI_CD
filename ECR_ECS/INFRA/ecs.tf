@@ -349,7 +349,7 @@ resource "aws_ecs_task_definition" "dummy_api_task" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = 512
   memory                   = 2048
-  execution_role_arn       = aws_iam_role.ecs_execution_role.arn
+  execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
   task_role_arn = aws_iam_role.ecs_task_role.arn
   container_definitions    = <<DEFINITION
   [
