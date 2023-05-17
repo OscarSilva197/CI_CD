@@ -296,11 +296,6 @@ resource "aws_ecs_cluster" "my_cluster" {
  name = "my-cluster" # Nome do cluster
 
 }
-
-
-
-
-
 resource "aws_iam_role" "ecsTaskExecutionRole" {
 
  name = "ecsTaskExecutionRole"
@@ -308,14 +303,8 @@ resource "aws_iam_role" "ecsTaskExecutionRole" {
  assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
 
 }
-
-
-
 resource "aws_iam_role" "ecs_task_role" {
-
  name = "role-name"
-
-
  assume_role_policy = <<EOF
 
 {
@@ -347,17 +336,9 @@ resource "aws_iam_role" "ecs_task_role" {
 EOF
 
 }
-
-
 data "aws_iam_policy_document" "assume_role_policy" {
-
- statement {
-
-
+t {
  actions = ["sts:AssumeRole"]
-
-
-
  principals {
 
  type = "Service"
@@ -369,17 +350,11 @@ data "aws_iam_policy_document" "assume_role_policy" {
  }
 
 }
-
-
-
 resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole_policy" {
 
  role = aws_iam_role.ecsTaskExecutionRole.name
 
  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-
-
-
 }
 
 
@@ -401,9 +376,6 @@ resource "aws_ecs_task_definition" "dummy_api_task" {
  execution_role_arn = aws_iam_role.ecsTaskExecutionRole.arn
 
  task_role_arn = aws_iam_role.ecs_task_role.arn
-
-
-
 
  container_definitions = <<DEFINITION
 
@@ -431,11 +403,7 @@ resource "aws_ecs_task_definition" "dummy_api_task" {
 
  "environment": [
 
-
-
  {"name": "APP_ENV", "value": "test"}
-
-
 
 ],
 
@@ -504,7 +472,7 @@ health_check {
 
  matcher = "200"
 
- path = var.health_check_path
+ path = "/organization"
 
  interval = 30
 
@@ -525,10 +493,7 @@ health_check {
 }
 
 
-
 #Create and ALB Listener that points to the Target Group just created
-
-
 
 resource "aws_lb_listener" "dummy_api_listener" {
 
@@ -547,10 +512,6 @@ resource "aws_lb_listener" "dummy_api_listener" {
  target_group_arn = aws_lb_target_group.mydummy_api_tg.arn
 
  }
-
-
-
-
 
  tags = {
 
@@ -573,7 +534,6 @@ resource "aws_ecs_service" "dummy_api_service" {
  task_definition = aws_ecs_task_definition.dummy_api_task.id # Referencing the task our service will spin up
 
  launch_type = "FARGATE"
-
 
  desired_count = 4 # Numero de container que quero correr são  4}
 
