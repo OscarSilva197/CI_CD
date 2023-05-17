@@ -38,3 +38,8 @@ variable "environment" {
 }
 */
 variable "docker_image_name" {}
+
+variable "environment" {
+ description = "Deployment Environment"
+ default = "testing"
+}

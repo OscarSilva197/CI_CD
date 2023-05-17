@@ -91,23 +91,8 @@ resource "aws_cloudwatch_log_stream" "base_api_client" {
 ##################################################################3
 
 resource "aws_iam_role" "ecs_execution_role" {
-  name = "ecs-execution-role"
- 
-  assume_role_policy = <<EOF
-{
- "Version": "2012-10-17",
- "Statement": [
-   {
-     "Action": "sts:AssumeRole",
-     "Principal": {
-       "Service": "ecs-tasks.amazonaws.com"
-     },
-     "Effect": "Allow",
-     "Sid": ""
-   }
- ]
-}
-EOF
+ name = "ecs_execution_role"
+ assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
 }
 
 resource "aws_iam_role" "ecs_task_role" {
@@ -134,21 +119,17 @@ resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-policy-attach
   role       = aws_iam_role.ecs_execution_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
-/*
-resource "aws_iam_role_policy_attachment" "task_s3" {
-  role       = "${aws_iam_role.ecs_task_role.name}"
-  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-}
 
-resource "aws_cloudwatch_log_group" "base_api_client" {
-  name = "base-api-client"
-}
+data "aws_iam_policy_document" "assume_role_policy" {
+ statement {
 
-resource "aws_cloudwatch_log_stream" "base_api_client" {
-  name           = "base-api-client"
-  log_group_name = aws_cloudwatch_log_group.base_api_client.name
+ actions = ["sts:AssumeRole"]
+ principals {
+ type = "Service"
+ identifiers = ["ecs-tasks.amazonaws.com"]
+  }
+ }
 }
-*/
 
 # Create and ECS Cluster
 resource "aws_ecs_cluster" "ecs_cluster" {
@@ -290,6 +271,7 @@ resource "aws_security_group" "ecs_sg" {
     protocol    = "TCP"
     self        = "false"
     cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [aws_security_group.dummy_api_sg.id]
     description = "http"
   }
 
