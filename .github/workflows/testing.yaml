@@ -181,7 +181,6 @@ jobs:
         docker push $ECR_REPOSITORY_URL:$IMAGE_TAG
     outputs:
       ecr_image_tag: ${{ steps.build_image.outputs.ecr_image_tag }}
-
 ######################################################################################
   
   deploy_testing_environment:
@@ -248,7 +247,6 @@ jobs:
         echo "::set-output name=api_url::$(terraform-bin output -raw alb_address)"
     outputs:
       api_url: ${{ steps.terraform_apply_testing_environment.outputs.api_url }}
-
 
       ########################################################################################
 
