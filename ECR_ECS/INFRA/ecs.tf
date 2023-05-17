@@ -344,7 +344,6 @@ resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole_policy" {
 # Definir as tarefas
 
 resource "aws_ecs_task_definition" "dummy_api_task" {
-
  family = "service" 
  requires_compatibilities = ["FARGATE"] 
  memory = 2048 
@@ -354,7 +353,7 @@ resource "aws_ecs_task_definition" "dummy_api_task" {
  container_definitions    = <<DEFINITION
   [
     {
-      "name"      : "base_api",
+      "name"      : "dummy_api",
       "image"     : "${var.docker_image_name}",
       "cpu"       : 512,
       "memory"    : 1024,
