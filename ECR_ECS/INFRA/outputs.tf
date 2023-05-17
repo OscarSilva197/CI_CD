@@ -1,6 +1,6 @@
 
 output "alb_address" {
-  value = "http://${aws_alb.application_load_balancer.dns_name}"
+  value = "http://${aws_alb.alb.dns_name}"
 }
 
 output "aws_ecs_cluster_id" {
