@@ -1,4 +1,4 @@
-
+/*
 # Cria uma role do IAM para o ECS
 resource "aws_iam_role" "ecs_execution_role" {
   name = "ecs-execution-role"
@@ -45,7 +45,7 @@ resource "aws_iam_policy" "ecs_execution_policy" {
 }
 
 ##############################################333
-/*
+
 resource "aws_iam_role" "ecs_task_role" {
   name = "ecs-task-role"
  
@@ -66,7 +66,6 @@ resource "aws_iam_role" "ecs_task_role" {
 EOF
 }
 
-*/
 ##############################################################3
 
 # Anexa a política de acesso à role do ECS
@@ -88,8 +87,68 @@ resource "aws_cloudwatch_log_stream" "base_api_client" {
   name           = "base-api-client"
   log_group_name = aws_cloudwatch_log_group.base_api_client.name
 }
-
+*/
 ##################################################################3
+
+resource "aws_iam_role" "ecs_execution_role" {
+  name = "ecs-execution-role"
+ 
+  assume_role_policy = <<EOF
+{
+ "Version": "2012-10-17",
+ "Statement": [
+   {
+     "Action": "sts:AssumeRole",
+     "Principal": {
+       "Service": "ecs-tasks.amazonaws.com"
+     },
+     "Effect": "Allow",
+     "Sid": ""
+   }
+ ]
+}
+EOF
+}
+
+resource "aws_iam_role" "ecs_task_role" {
+  name = "ecs-task-role"
+ 
+  assume_role_policy = <<EOF
+{
+ "Version": "2012-10-17",
+ "Statement": [
+   {
+     "Action": "sts:AssumeRole",
+     "Principal": {
+       "Service": "ecs-tasks.amazonaws.com"
+     },
+     "Effect": "Allow",
+     "Sid": ""
+   }
+ ]
+}
+EOF
+}
+ 
+resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-policy-attachment" {
+  role       = aws_iam_role.ecs_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+resource "aws_iam_role_policy_attachment" "task_s3" {
+  role       = "${aws_iam_role.ecs_task_role.name}"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+}
+
+resource "aws_cloudwatch_log_group" "base_api_client" {
+  name = "base-api-client"
+}
+
+resource "aws_cloudwatch_log_stream" "base_api_client" {
+  name           = "base-api-client"
+  log_group_name = aws_cloudwatch_log_group.base_api_client.name
+}
+
+
 
 # Create and ECS Cluster
 resource "aws_ecs_cluster" "ecs_cluster" {
@@ -133,7 +192,7 @@ resource "aws_ecs_task_definition" "dummy_api_task" {
   cpu                      = 512
   memory                   = 2048
   execution_role_arn       = aws_iam_role.ecs_execution_role.arn
-
+  task_role_arn = aws_iam_role.ecs_task_role.arn
   container_definitions    = <<DEFINITION
   [
     {
