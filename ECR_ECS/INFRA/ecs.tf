@@ -344,16 +344,17 @@ resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole_policy" {
 # Definir as tarefas
 
 resource "aws_ecs_task_definition" "dummy_api_task" {
- family = "service" 
- requires_compatibilities = ["FARGATE"] 
- memory = 2048 
- cpu = 512 
- execution_role_arn = aws_iam_role.ecsTaskExecutionRole.arn
- task_role_arn = aws_iam_role.ecs_task_role.arn
- container_definitions    = <<DEFINITION
+  family                   = "service"
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = 512
+  memory                   = 2048
+  execution_role_arn       = aws_iam_role.ecs_execution_role.arn
+  task_role_arn = aws_iam_role.ecs_task_role.arn
+  container_definitions    = <<DEFINITION
   [
     {
-      "name"      : "dummy_api",
+      "name"      : "base_api",
       "image"     : "${var.docker_image_name}",
       "cpu"       : 512,
       "memory"    : 1024,
@@ -398,7 +399,7 @@ health_check {
  unhealthy_threshold = 2
  timeout = 3
  matcher = "200"
- path = "/organization"
+ path = "/"
  interval = 30
  }
  tags = {
