@@ -63,5 +63,5 @@ jobs:
         id: checkov
         uses: bridgecrewio/checkov-action@master
         with:
-          directory: terraform/ecr_terraform
+          directory: ECR_ECS/main
           framework: terraform 
