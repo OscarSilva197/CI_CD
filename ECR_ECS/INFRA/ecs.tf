@@ -391,6 +391,7 @@ resource "aws_alb" "alb" {
 resource "aws_lb_target_group" "mydummy_api_tg" {
  name = "mydummy-api-tg"
  port = 80
+ 
  protocol = "HTTP"
  target_type = "ip"
  vpc_id = aws_vpc.my_vpc.id
