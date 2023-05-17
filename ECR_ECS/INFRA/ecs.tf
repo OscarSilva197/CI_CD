@@ -134,6 +134,7 @@ resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-policy-attach
   role       = aws_iam_role.ecs_execution_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
+/*
 resource "aws_iam_role_policy_attachment" "task_s3" {
   role       = "${aws_iam_role.ecs_task_role.name}"
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
@@ -147,8 +148,7 @@ resource "aws_cloudwatch_log_stream" "base_api_client" {
   name           = "base-api-client"
   log_group_name = aws_cloudwatch_log_group.base_api_client.name
 }
-
-
+*/
 
 # Create and ECS Cluster
 resource "aws_ecs_cluster" "ecs_cluster" {
@@ -163,7 +163,7 @@ resource "aws_ecs_cluster" "ecs_cluster" {
 resource "aws_ecs_service" "dummy_api_service" {
   depends_on = [aws_ecs_task_definition.dummy_api_task]
 
-  name             = "ecs-dummmy-api-service"
+  name             = "base_api"
   cluster          = aws_ecs_cluster.ecs_cluster.id
   task_definition  = aws_ecs_task_definition.dummy_api_task.id
   desired_count    = 4
@@ -189,7 +189,7 @@ resource "aws_ecs_service" "dummy_api_service" {
 resource "aws_ecs_task_definition" "dummy_api_task" {
   family                   = "service"
   network_mode             = "awsvpc"
-  requires_compatibilities = ["FARGATE", "EC2"]
+  requires_compatibilities = ["FARGATE"]
   cpu                      = 512
   memory                   = 2048
   execution_role_arn       = aws_iam_role.ecs_execution_role.arn
@@ -208,14 +208,6 @@ resource "aws_ecs_task_definition" "dummy_api_task" {
           "hostPort"      : 80
         }
       ],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-group": "base-api-client",
-          "awslogs-stream-prefix": "base-api-client",
-          "awslogs-region": "us-east-1"
-        }
-      },
       "environment": [
         {"name": "APP_ENV", "value": "test"}
       ]
