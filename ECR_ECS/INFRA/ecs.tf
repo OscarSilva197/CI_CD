@@ -337,7 +337,7 @@ EOF
 
 }
 data "aws_iam_policy_document" "assume_role_policy" {
-t {
+ statement {
  actions = ["sts:AssumeRole"]
  principals {
 
