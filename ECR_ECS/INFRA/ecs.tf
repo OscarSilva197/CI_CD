@@ -184,6 +184,7 @@ resource "aws_ecs_service" "dummy_api_service" {
     container_port   = 80
   }
 }
+
 # Now, let's define a tast to run in the just created ECS Cluster
 resource "aws_ecs_task_definition" "dummy_api_task" {
   family                   = "service"
