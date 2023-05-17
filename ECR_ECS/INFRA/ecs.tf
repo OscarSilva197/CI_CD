@@ -153,15 +153,16 @@ resource "aws_cloudwatch_log_stream" "base_api_client" {
 # Create and ECS Cluster
 resource "aws_ecs_cluster" "ecs_cluster" {
   name = "ecs-cluster"
-  setting {
+  
+  /*setting {
     name  = "containerInsights"
     value = "enabled"
-  }
+  }*/
 }
 
 # ECS Service. 
 resource "aws_ecs_service" "dummy_api_service" {
-  depends_on = [aws_ecs_task_definition.dummy_api_task]
+  #depends_on = [aws_ecs_task_definition.dummy_api_task]
 
   name             = "base_api"
   cluster          = aws_ecs_cluster.ecs_cluster.id
@@ -172,7 +173,7 @@ resource "aws_ecs_service" "dummy_api_service" {
 
   network_configuration {
     assign_public_ip = false
-    security_groups  = [aws_security_group.dummy_api_sg.id]
+    security_groups  = [aws_security_group.ecs_sg.id]
     subnets = [aws_subnet.private_subnet_1.id, aws_subnet.private_subnet_2.id]
   }
   lifecycle {
@@ -221,13 +222,12 @@ resource "aws_ecs_task_definition" "dummy_api_task" {
 
 # Creat Application Load Balancer for the Dummy API service
 resource "aws_alb" "application_load_balancer" {
-  name               = "dummy-api-ecs-alb" # Naming our load balancer
+  name               = "dummy-api-ecs-alb" 
   load_balancer_type = "application"
   subnets            = [aws_subnet.public_subnet_1.id, aws_subnet.public_subnet_2.id]
   # Referencing the security group
   security_groups = [aws_security_group.dummy_api_sg.id]
 }
-
 
 # Register a Target Group, which will be used in the Dummy API service's
 # definition
@@ -259,6 +259,29 @@ resource "aws_lb_listener" "dummy_api_listener" {
 # Security Group for ECS Dummy API Service
 resource "aws_security_group" "dummy_api_sg" {
   name   = "dummy-api-sg"
+  vpc_id     = aws_vpc.my_vpc.id
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "TCP"
+    self        = "false"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "http"
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+#############################################
+
+resource "aws_security_group" "ecs_sg" {
+  name   = "ecs-sg"
   vpc_id     = aws_vpc.my_vpc.id
 
   ingress {
