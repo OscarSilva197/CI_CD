@@ -48,3 +48,20 @@ jobs:
         scan-type: 'fs'
         scan-ref: '.'
         trivy-config: trivy.yaml
+  
+#########################
+  terraform_scripts_analysis:
+    name: Scan Terraform Scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.9
+      - name: Test with Checkov
+        id: checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: terraform/ecr_terraform
+          framework: terraform 
