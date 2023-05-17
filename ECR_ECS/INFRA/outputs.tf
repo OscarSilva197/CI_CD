@@ -4,7 +4,7 @@ output "alb_address" {
 }
 
 output "aws_ecs_cluster_id" {
-value = aws_ecs_cluster.ecs_cluster.id
+value = aws_ecs_cluster.my_cluster.id
 }
 output "aws_ecs_service_name" {
 value = aws_ecs_service.dummy_api_service.name
